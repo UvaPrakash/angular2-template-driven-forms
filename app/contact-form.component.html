@@ -1,4 +1,4 @@
-<form>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.form)">
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
@@ -10,12 +10,20 @@
 					id="firstName" 
 					type="text" 
 					class="form-control" 
-					required>
-				<div 
-					class="alert alert-danger" 
-					*ngIf="firstName.touched && !firstName.valid">
-					First Name is required
-				</div>
+					required
+					minlength="3">
+				<div *ngIf="firstName.touched && firstName.errors">
+					<div 
+						class="alert alert-danger" 
+						*ngIf="firstName.errors.required">
+						First Name is required
+					</div>
+					<div 
+						class="alert alert-danger"
+						*ngIf="firstName.errors.minlength">
+						First name should be minimum {{ firstName.errors.minlength.requiredLength }} characters
+					</div>
+				</div>	
 			</div>
 			<div class="form-group">
 				<label for="comment">Comment</label>
@@ -34,7 +42,7 @@
 					Comment is required
 				</div>
 			</div>
-			<button class="btn btn-primary" type="submit">Submit</button>
+			<button class="btn btn-primary" type="submit" [disabled]="!f.valid">Submit</button>
 		</div>
 		<div class="col-md-2"></div>
 	</div>
